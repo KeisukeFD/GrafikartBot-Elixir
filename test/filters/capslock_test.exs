@@ -21,6 +21,13 @@ defmodule Discordbot.CapslockTest do
     assert_receive {_, _, {_, _, _, %{content: ^capslock_message}}}
   end
 
+  test "let mention pass", %{state: state, capslock_message: capslock_message} do
+    message = Map.merge(DiscordbotTest.message, %{
+      "content" => "<@123121231232133> ?"
+    })
+    assert {:no, _} = Discordbot.Capslock.handle(:message_create, message, state)
+  end
+
   test "let short message pass", %{state: state} do
     message = Map.merge(DiscordbotTest.message, %{
       "content" => "$_SESSION"

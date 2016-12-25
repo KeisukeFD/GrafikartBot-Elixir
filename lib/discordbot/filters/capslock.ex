@@ -7,18 +7,24 @@ defmodule Discordbot.Capslock do
   alias Discordbot.Helpers.Message
 
   def handle(:message_create, %{"content" => content, "channel_id" => channel_id, "author" => %{"id" => user_id}}, state) do
-    spawn fn ->
-      if content == String.upcase(content) and String.length(content) > 15 do
-        message = Application.get_env(:discordbot, :capslock)
-          |> String.replace("@user", Message.mention(user_id))
-        Channel.send_message(state[:rest_client], channel_id, %{content: message})
-      end
+    if is_capslock(content) do
+      message = Application.get_env(:discordbot, :capslock)
+        |> String.replace("@user", Message.mention(user_id))
+      spawn fn -> Channel.send_message(state[:rest_client], channel_id, %{content: message}) end
+      {:ok, state}
+    else
+      {:no, state}
     end
-    {:ok, state}
   end
 
   def handle(_type, _payload, state) do
-    {:ok, state}
-  end 
+    {:no, state}
+  end
+
+  def is_capslock(content) do
+    content == String.upcase(content) and
+    String.length(content) > 5 and
+    Regex.match?(~r/[A-Z]{4,}/, content)
+  end
 
 end
