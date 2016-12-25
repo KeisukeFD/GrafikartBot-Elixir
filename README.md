@@ -1,15 +1,7 @@
 # Discordbot
 
-Todo 
+[![Build Status](https://travis-ci.org/Grafikart/GrafikartBot-Elixir.svg)](https://travis-ci.org/Grafikart/GrafikartBot-Elixir)
 
---Capslock--
---Code detection--
---Filtre à insultes--
---Formatage des liens--
---Donner au bot un nom / avatar--
-- Commande /all 
-- Commande /help
-- Reconnecter le bot sur le Guild, https://discordapp.com/developers/docs/resources/user#get-current-user-guilds
 
 ```
 Voici la liste de mes commandes disponibles :
