@@ -20,8 +20,9 @@ defmodule Discordbot.Bot do
         Discordbot.Commands,
         Discordbot.Commands.Admin
       ])
+    else
+      {:ok, state}
     end
-    {:ok, state}
   end
 
   def handle_event({_type, _payload}, state) do

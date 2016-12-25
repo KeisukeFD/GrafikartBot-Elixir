@@ -14,10 +14,12 @@ defmodule Discordbot.Commands do
     commands = Application.get_env(:discordbot, :commands)
     command = parse_command(command)
     last_command = Map.get(state, :last_command, nil)
-    if Keyword.has_key?(commands, command.name) && command != last_command do
+    if Keyword.has_key?(commands, command.name) do
       spawn fn -> Channel.delete_message(conn, data["channel_id"], data["id"]) end
-      spawn fn -> Channel.send_message(conn, data["channel_id"], %{content: message(command)}) end
-      {:ok, Map.update(state, :last_command, command, command)}
+      if last_command != command do
+        spawn fn -> Channel.send_message(conn, data["channel_id"], %{content: message(command)}) end
+      end
+      {:ok, Map.put(state, :last_command, command)}
     else
       {:no, state}
     end

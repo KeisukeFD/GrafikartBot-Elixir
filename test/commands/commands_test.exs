@@ -20,10 +20,11 @@ defmodule Discordbot.CommandsTest do
       "content" => "!demo <@123123213> Salut"
     })
     assert {:ok, state } = Discordbot.Commands.handle(:message_create, message, state)
-    assert {:no, _state } = Discordbot.Commands.handle(:message_create, message, state)
+    assert {:ok, _state } = Discordbot.Commands.handle(:message_create, message, state)
     assert_receive {_, _, {_, :delete, _, _}}
     assert_receive {_, _, {_, :post, _, %{content: "demo <@123123213> - Salut"}}}
-    refute_receive {_, _, {_, :delete, _, _}}
+    assert_receive {_, _, {_, :delete, _, _}}
+    refute_receive {_, _, {_, :post, _, %{content: "demo <@123123213> - Salut"}}}
   end
 
   test "command is detected without user", %{state: state} do
