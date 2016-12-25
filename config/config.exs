@@ -1,5 +1,3 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
 config :discordbot,
@@ -33,7 +31,19 @@ config :discordbot,
     google: ":mag: @user Tu devrais trouver ton bonheur sur google https://www.google.fr/?gws_rd=ssl#q=@content",
     php: ":mag: @user Je pense que cette fonction devrait t'aider http://php.net/search.php?show=quickref&pattern=@content",
     grafikart: ":mag: @user Il y a surement déjà un tutoriel sur le sujet https://www.grafikart.fr/search?q=@content",
-  ]
+  ],
+  help: """
+Voici la liste de mes commandes disponibles :
+
+**help** : Affiche cette aide
+**google** : Permet de renvoyer un utilisateur sur google, ex: "google @Grafikart#1849 grafikart.fr"
+**grafikart** : Permet de renvoyer un utilisateur sur la recherche grafikart.fr, ex: "grafikart @Grafikart#1849 grafikart.fr"
+**php** : Permet de renvoyer un utilisateur sur la doc de php, ex: "php @Grafikart#1849 grafikart.fr"
+**code** : Permet d'indiquer à un utilisateur comment mieux poster sa question, ex: "code @Grafikart#1849"
+
+Un bug / un problème avec le bot ? https://github.com/Grafikart/GrafikartBot-Elixir/issues
+"""
+
 
 config :porcelain, goon_warn_if_missing: false
 
