@@ -1,4 +1,8 @@
-defmodule Discordbot.Filters.Links do
+defmodule Discordbot.Filters do
+
+  @moduledoc """
+  Filter the content of a channel to force a format on message
+  """
 
   alias DiscordEx.RestClient.Resources.Channel
 
@@ -7,14 +11,16 @@ defmodule Discordbot.Filters.Links do
       {channel_id, filter} ->
         if !Regex.run(filter, data["content"]) do
           spawn fn -> Channel.delete_message(conn, channel_id, data["id"]) end
+          {:ok, state}
+        else
+          {:no, state}
         end
-      _ -> nil
+      _ -> {:no, state}
     end
-    {:ok, state}
   end
 
   def handle(_type, _data, state) do
-    {:ok, state}
+    {:no, state}
   end
 
 end

@@ -5,9 +5,7 @@ defmodule Discordbot.Code do
 
   def handle(:message_create, payload, state = %{rest_client: conn}) do
     if is_code(payload["content"]) do
-      spawn fn ->
-        Channel.delete_message(conn, payload["channel_id"], payload["id"])
-      end
+      spawn fn -> Channel.delete_message(conn, payload["channel_id"], payload["id"]) end
       spawn fn ->
         case Message.dm(conn, payload["author"]["id"], dm(payload)) do
           %{"code" => _code} ->
@@ -16,12 +14,14 @@ defmodule Discordbot.Code do
             nil
         end
       end
+      {:ok, state}
+    else
+      {:no, state}
     end
-    {:ok, state}
   end
 
   def handle(_type, _payload, state) do
-    {:ok, state}
+    {:no, state}
   end 
   
   @doc """

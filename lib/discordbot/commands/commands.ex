@@ -8,12 +8,14 @@ defmodule Discordbot.Commands do
     if Keyword.has_key?(commands, command.name) do
       spawn fn -> Channel.delete_message(conn, data["channel_id"], data["id"]) end
       spawn fn -> Channel.send_message(conn, data["channel_id"], %{content: message(command)}) end
+      {:ok, state}
+    else
+      {:no, state}
     end
-    {:ok, state}
   end
 
   def handle(_type, _data, state) do
-    {:ok, state}
+    {:no, state}
   end
 
   defp parse_command(command) do

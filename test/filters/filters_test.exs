@@ -1,4 +1,4 @@
-defmodule Discordbot.Filters.LinksTest do
+defmodule Discordbot.FiltersTest do
 
   use ExUnit.Case, async: true
 
@@ -14,7 +14,7 @@ defmodule Discordbot.Filters.LinksTest do
       "content" => "<:css3:250692379638497280> some text http://demolink.fr",
       "channel_id" => 200
     })
-    Discordbot.Filters.Links.handle(:message_create, message, state)
+    Discordbot.Filters.handle(:message_create, message, state)
     refute_receive {_, _, {_, :delete, _, _}}
   end
 
@@ -23,7 +23,7 @@ defmodule Discordbot.Filters.LinksTest do
       "content" => "Voila mon lien https://github.com/docker/docker-birthday-3",
       "channel_id" => 200
     })
-    Discordbot.Filters.Links.handle(:message_create, message, state)
+    Discordbot.Filters.handle(:message_create, message, state)
     assert_receive {_, _, {_, :delete, _, _}}
   end
 
@@ -32,7 +32,7 @@ defmodule Discordbot.Filters.LinksTest do
       "content" => @badlink,
       "channel_id" => 200
     })
-    Discordbot.Filters.Links.handle(:message_create, message, state)
+    Discordbot.Filters.handle(:message_create, message, state)
     assert_receive {_, _, {_, :delete, _, _}}
   end
 
@@ -41,7 +41,7 @@ defmodule Discordbot.Filters.LinksTest do
       "content" => @link,
       "channel_id" => 200
     })
-    Discordbot.Filters.Links.handle(:message_create, message, state)
+    Discordbot.Filters.handle(:message_create, message, state)
     refute_receive {_, _, {_, :delete, _, _}}
   end
 
