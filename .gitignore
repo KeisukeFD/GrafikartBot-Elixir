@@ -1,11 +1,13 @@
 # IntelliJ
 .idea
+dploy.sh
 
 # No release
 /rel
 
 # No dev / prod config
 /config/dev.exs
+/config/prod.exs
 
 # The directory Mix will write compiled artifacts to.
 /_build

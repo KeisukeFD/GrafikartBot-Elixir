@@ -2,6 +2,13 @@ use Mix.Config
 
 config :discordbot,
   capslock: ":scream_cat: Pas la peine de hurler @user",
+  filters_dm: """
+:octagonal_sign: Votre message a été supprimé car il ne respecte pas le format imposé par le channel
+
+```
+@content
+```
+  """,
   code: [
     message: ":space_invader: Woops trop de code @user @link",
     dm: """
@@ -31,6 +38,11 @@ config :discordbot,
     google: ":mag: @user Tu devrais trouver ton bonheur sur google https://www.google.fr/?gws_rd=ssl#q=@content",
     php: ":mag: @user Je pense que cette fonction devrait t'aider http://php.net/search.php?show=quickref&pattern=@content",
     grafikart: ":mag: @user Il y a surement déjà un tutoriel sur le sujet https://www.grafikart.fr/search?q=@content",
+    code: """
+:robot: Oula pas évident !
+Poster des gros morceaux de code n'est pas super pratique pour la compréhension, aussi @user n'hésite pas à utiliser ce template : http://hastebin.com/uzufecurol.php .
+En décrivant bien ton problème tu augmente les chances de réponses
+"""
   ],
   help: """
 Voici la liste de mes commandes disponibles :

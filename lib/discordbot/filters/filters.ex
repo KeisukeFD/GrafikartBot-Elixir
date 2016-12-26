@@ -5,12 +5,14 @@ defmodule Discordbot.Filters do
   """
 
   alias DiscordEx.RestClient.Resources.Channel
+  alias Discordbot.Helpers.Message
 
-  def handle(:message_create, data, state = %{rest_client: conn}) do
-    case List.keyfind(Application.get_env(:discordbot, :filters), data["channel_id"], 0) do
+  def handle(:message_create, payload, state = %{rest_client: conn}) do
+    case List.keyfind(Application.get_env(:discordbot, :filters), payload["channel_id"], 0) do
       {channel_id, filter} ->
-        if !Regex.run(filter, data["content"]) do
-          spawn fn -> Channel.delete_message(conn, channel_id, data["id"]) end
+        if !Regex.run(filter, payload["content"]) do
+          spawn fn -> Channel.delete_message(conn, channel_id, payload["id"]) end
+          spawn fn -> Message.dm(conn, payload["author"]["id"], message(payload)) end
           {:ok, state}
         else
           {:no, state}
@@ -19,8 +21,13 @@ defmodule Discordbot.Filters do
     end
   end
 
-  def handle(_type, _data, state) do
+  def handle(_type, _payload, state) do
     {:no, state}
+  end
+
+  def message(payload) do
+    Application.get_env(:discordbot, :filters_dm)
+      |> String.replace("@content", payload["content"])
   end
 
 end

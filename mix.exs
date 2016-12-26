@@ -3,7 +3,7 @@ defmodule Discordbot.Mixfile do
 
   def project do
     [app: :discordbot,
-     version: "0.1.1",
+     version: "0.1.4",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
@@ -32,7 +32,7 @@ defmodule Discordbot.Mixfile do
       {:discord_ex, git: "https://github.com/rmcafee/discord_ex.git"},
       {:httpoison, "~> 0.9.0"},
       {:poison, "~> 2.0"},
-      {:exrm, "~> 1.0"}
+      {:distillery, "~> 1.0"}
     ]
   end
 end
