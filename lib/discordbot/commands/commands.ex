@@ -12,7 +12,7 @@ defmodule Discordbot.Commands do
 
   def handle(:message_create, data = %{"content" => "!" <> command}, state = %{rest_client: conn}) do
     commands = Application.get_env(:discordbot, :commands)
-    command = parse_command(command)
+    command = command |> String.split |> parse_command
     last_command = Map.get(state, :last_command, nil)
     if Keyword.has_key?(commands, command.name) do
       spawn fn -> Channel.delete_message(conn, data["channel_id"], data["id"]) end
@@ -29,33 +29,38 @@ defmodule Discordbot.Commands do
     {:no, state}
   end
 
-  defp parse_command(command) do
-    splits = String.split(command)
-    command = List.first(splits) |> String.to_atom
-    splits = Enum.drop(splits, 1)
-    splits_length = Kernel.length(splits)
-    if splits_length > 0 do
-      if String.at(Enum.at(splits, 0), 1) == "@" do
-        %{
-          name: command,
-          user: Enum.at(splits, 0),
-          content: Enum.drop(splits, 1) |> Enum.join(" ")
-        }
-      else
-        %{
-          name: command,
-          user: "",
-          content: Enum.join(splits, " ")
-        }
-      end
-    else
-      %{
-        name: command,
-        user: "",
-        content: ""
-      }
-    end
+  defp parse_command([command, "<@" <> user | content]) do
+    %{
+      name: String.to_atom(command),
+      user: "<@" <> user,
+      content: Enum.join(content, " ")
+    }
   end
+
+  defp parse_command([command | content]) do
+    %{
+      name: String.to_atom(command),
+      user: "",
+      content: Enum.join(content, " ")
+    }
+  end
+
+  defp parse_command([command]) do
+    %{
+      name: String.to_atom(command),
+      user: "",
+      content: ""
+    }
+  end
+
+  defp parse_command do
+    %{
+      name: :none,
+      user: "",
+      content: ""
+    }
+  end
+
 
   defp message(command) do
     Application.get_env(:discordbot, :commands)[command.name]
